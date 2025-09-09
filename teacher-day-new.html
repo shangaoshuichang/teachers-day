@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师节快乐 - 致刘毅老师</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B6B',
+                        secondary: '#4ECDC4',
+                        accent: '#FFD166',
+                        warm: '#F7FFF7',
+                        dark: '#292F36'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['"Ma Shan Zheng"', 'cursive']
+                    },
+                },
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            .animation-delay-1000 {
+                animation-delay: 1s;
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+    
+    <!-- 加载中文字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 动画效果 */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        /* 背景效果 */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confetti-fall 5s ease-in-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(1000%) rotate(720deg); opacity: 0; }
+        }
+        
+        /* 页面滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #FF6B6B;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF5252;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-warm to-secondary text-dark">
+    <!-- 页面背景装饰 -->
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none overflow-hidden"></div>
+    
+    <!-- 主内容容器 -->
+    <div class="container mx-auto px-4 py-8 relative">
+        <!-- 头部 -->
+        <header class="text-center mb-12 fade-in">
+            <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-display text-primary text-shadow mb-4">
+                教师节快乐！
+            </h1>
+            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display text-dark mb-6">
+                亲爱的刘毅老师
+            </h2>
+            <p class="text-xl text-gray-700 max-w-2xl mx-auto">
+                在这个特别的日子里，我们向您致以最诚挚的祝福和感谢
+            </p>
+        </header>
+        
+        <!-- 主要内容区 -->
+        <main class="max-w-4xl mx-auto">
+            <!-- 互动祝福卡片 -->
+            <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10 fade-in animation-delay-1000">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <!-- 图片展示区域 -->
+                    <div class="w-full md:w-1/2">
+                        <div class="border-2 border-gray-200 rounded-xl overflow-hidden shadow-lg">
+                            <img id="teacher-image" class="w-full h-auto object-cover" src="img/2.jpg" alt="致刘毅老师的祝福">
+                        </div>
+                    </div>
+                    
+                    <!-- 祝福信息 -->
+                    <div class="w-full md:w-1/2">
+                        <h3 class="text-2xl font-bold text-dark mb-4">爱的祝福</h3>
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <textarea 
+                                    id="message-input" 
+                                    class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all h-40 resize-none"
+                                    placeholder="在这里写下对老师的祝福..."
+                                ></textarea>
+                                <div id="char-count" class="absolute bottom-2 right-3 text-xs text-gray-500">0/500</div>
+                            </div>
+                            
+                            <button 
+                                id="send-message" 
+                                class="w-full bg-primary hover:bg-primary/90 text-white py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all font-medium"
+                            >
+                                <i class="fa fa-heart mr-2"></i> 发送祝福
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 老师的贡献 -->
+            <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 mb-10 fade-in">
+                <h3 class="text-2xl font-bold text-dark mb-6 text-center">老师的辛勤付出</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fa fa-book text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">传授知识</h4>
+                            <p class="text-gray-600">您用渊博的知识，开启我们的智慧之门，引领我们探索未知的世界。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fa fa-lightbulb-o text-secondary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">启发思考</h4>
+                            <p class="text-gray-600">您不仅教授我们知识，更重要的是培养我们独立思考和解决问题的能力。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fa fa-heart text-accent"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">关怀学生</h4>
+                            <p class="text-gray-600">您像家人一样关心我们的成长，无论是学习还是生活上的困难，您都给予我们帮助。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fa fa-graduation-cap text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold mb-2">引领未来</h4>
+                            <p class="text-gray-600">您为我们指明前进的方向，让我们在人生的道路上走得更加坚定和自信。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 动态祝福展示区 -->
+            <div id="messages-display" class="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 fade-in">
+                <h3 class="text-2xl font-bold text-dark mb-6 text-center">来自同学们的祝福</h3>
+                
+                <div id="messages-container" class="space-y-4">
+                    <!-- 默认祝福 -->
+                    <div class="p-4 bg-warm rounded-lg border-l-4 border-primary shadow-sm">
+                        <p class="italic text-gray-700">"感谢刘老师的辛勤教导，您的每一堂课都让我受益匪浅！祝您教师节快乐！"</p>
+                        <p class="text-right text-sm text-gray-500 mt-2">— 一位学生</p>
+                    </div>
+                    
+                    <div class="p-4 bg-warm rounded-lg border-l-4 border-secondary shadow-sm">
+                        <p class="italic text-gray-700">"刘老师，您不仅是我们的老师，更是我们的朋友。谢谢您一直以来的鼓励和支持！"</p>
+                        <p class="text-right text-sm text-gray-500 mt-2">— 全班同学</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- 页脚 -->
+        <footer class="text-center mt-12 text-gray-600 fade-in">
+            <p>© 2025 教师节特别制作 | 向所有辛勤付出的老师们致敬</p>
+            <p class="text-sm mt-2">点击 <i class="fa fa-heart text-primary"></i> 向老师表达您的爱与感谢</p>
+        </footer>
+    </div>
+    
+    <script>
+        // DOM 元素
+        const messageInput = document.getElementById('message-input');
+        const charCount = document.getElementById('char-count');
+        const sendMessage = document.getElementById('send-message');
+        const messagesContainer = document.getElementById('messages-container');
+        const confettiContainer = document.getElementById('confetti-container');
+        
+        // 字符计数
+        messageInput.addEventListener('input', () => {
+            const count = messageInput.value.length;
+            charCount.textContent = `${count}/500`;
+            
+            if (count > 500) {
+                charCount.classList.add('text-red-500');
+                messageInput.value = messageInput.value.substring(0, 500);
+                charCount.textContent = '500/500';
+            } else {
+                charCount.classList.remove('text-red-500');
+            }
+        });
+        
+        // 发送祝福
+        sendMessage.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            
+            if (message) {
+                // 创建新的祝福元素
+                const messageElement = document.createElement('div');
+                messageElement.className = 'p-4 bg-warm rounded-lg border-l-4 border-primary shadow-sm fade-in';
+                messageElement.innerHTML = `
+                    <p class="italic text-gray-700">"${message}"</p>
+                    <p class="text-right text-sm text-gray-500 mt-2">— 您的学生</p>
+                `;
+                
+                // 添加到容器顶部
+                messagesContainer.insertBefore(messageElement, messagesContainer.firstChild);
+                
+                // 保存到localStorage
+                saveMessageToHistory(message);
+                
+                // 清空输入框
+                messageInput.value = '';
+                charCount.textContent = '0/500';
+                
+                // 显示成功动画
+                showConfetti();
+                
+                // 添加成功提示
+                sendMessage.innerHTML = '<i class="fa fa-check mr-2"></i> 祝福已发送';
+                sendMessage.classList.add('bg-green-500');
+                
+                setTimeout(() => {
+                    sendMessage.innerHTML = '<i class="fa fa-heart mr-2"></i> 发送祝福';
+                    sendMessage.classList.remove('bg-green-500');
+                }, 2000);
+            }
+        });
+        
+        // 保存祝福到历史记录
+        function saveMessageToHistory(message) {
+            // 获取现有历史记录
+            let history = getMessageHistory();
+            
+            // 添加新消息（包含时间戳）
+            history.unshift({
+                message: message,
+                timestamp: new Date().toISOString()
+            });
+            
+            // 限制历史记录数量（最多保存50条）
+            if (history.length > 50) {
+                history = history.slice(0, 50);
+            }
+            
+            // 保存到localStorage
+            localStorage.setItem('teacherDayMessages', JSON.stringify(history));
+        }
+        
+        // 获取历史祝福记录
+        function getMessageHistory() {
+            const history = localStorage.getItem('teacherDayMessages');
+            return history ? JSON.parse(history) : getDefaultMessages();
+        }
+        
+        // 获取默认祝福消息
+        function getDefaultMessages() {
+            return [
+                {
+                    message: "刘老师，感谢您一年来的辛勤教导，您的每一堂课都让我受益匪浅！祝您教师节快乐！",
+                    timestamp: new Date(Date.now() - 86400000).toISOString() // 昨天
+                },
+                {
+                    message: "亲爱的刘老师，您不仅是我们的老师，更是我们的朋友。谢谢您一直以来的鼓励和支持！",
+                    timestamp: new Date(Date.now() - 172800000).toISOString() // 前天
+                },
+                {
+                    message: "老师，您的耐心和细心让我在学习中不断进步，感谢您的付出！",
+                    timestamp: new Date(Date.now() - 259200000).toISOString() // 大前天
+                }
+            ];
+        }
+        
+        // 加载历史祝福记录
+        function loadMessageHistory() {
+            const history = getMessageHistory();
+            
+            // 清除默认祝福
+            while (messagesContainer.firstChild) {
+                messagesContainer.removeChild(messagesContainer.firstChild);
+            }
+            
+            // 添加历史记录到容器
+            history.forEach(item => {
+                const messageElement = document.createElement('div');
+                messageElement.className = 'p-4 bg-warm rounded-lg border-l-4 border-primary shadow-sm fade-in';
+                messageElement.innerHTML = `
+                    <p class="italic text-gray-700">"${item.message}"</p>
+                    <p class="text-right text-sm text-gray-500 mt-2">— 您的学生</p>
+                `;
+                
+                messagesContainer.appendChild(messageElement);
+            });
+        }
+        
+        // 显示庆祝效果
+        function showConfetti() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#6A0572', '#AB83A1', '#FC5185'];
+            const shapes = ['circle', 'star'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                
+                // 设置样式
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.backgroundColor = color;
+                
+                if (shape === 'star') {
+                    confetti.innerHTML = '<i class="fa fa-star" style="font-size: ' + size + 'px; color: ' + color + ';"></i>';
+                    confetti.style.width = 'auto';
+                    confetti.style.height = 'auto';
+                }
+                
+                // 设置位置和动画
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = '-10%';
+                confetti.style.opacity = '0';
+                confetti.style.position = 'absolute';
+                confetti.style.zIndex = '100';
+                confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                // 添加到容器
+                confettiContainer.appendChild(confetti);
+                
+                // 自动移除
+                setTimeout(() => {
+                    confetti.remove();
+                }, 7000);
+            }
+        }
+        
+        // 页面加载完成后的动画
+        document.addEventListener('DOMContentLoaded', () => {
+            // 加载历史祝福记录
+            loadMessageHistory();
+            
+            // 添加一些初始动画效果
+            setTimeout(() => {
+                showConfetti();
+            }, 1000);
+        });
+        
+        // 响应式处理
+        window.addEventListener('resize', () => {
+            // 响应式调整代码可以在这里添加
+        });
+    </script>
+</body>
+</html>
